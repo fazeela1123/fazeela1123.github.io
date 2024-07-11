@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 Not Found | Bettr Coffee</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>
+        .everything {
+            display: block;
+            font-family: 'Roboto Condensed';
+            font-weight: 600;
+        }
+        .container {
+            text-align: center;
+        }
+        .bar img {
+            display: block;
+            width: 100%;
+            height: auto;
+            margin-top: 100px;
+        }
+        .game {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .cup {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #000;
+            margin: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .cup img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="everything">
+        <div class="bar">
+            <img src="bar.png" alt="Bar">
+        </div>
+
+        <div class="container">
+            <img src="logo.png" alt="Bettr Coffee Logo" class="logo">
+            <h1>404</h1>
+            <p>Looks like you're lost in the coffee beans...</p>
+            <a href="https://bettr.coffee/">Brew your way back home</a>
+
+            <div class="game-instructions">
+                <p>Find the filled cup of coffee!</p>
+            </div>
+
+            <div class="game" id="game">
+                <!-- Cups will be generated here -->
+            </div>
+            <p id="game-message"></p>
+        </div>
+    </div>
+
+    <script>
+        const gameContainer = document.getElementById('game');
+
+        const cupsData = [
+            { status: 'filled' },
+            { status: 'spilled' },
+            { status: 'spilled' }
+        ];
+
+        cupsData.sort(() => Math.random() - 0.5); // Shuffle cups
+
+        cupsData.forEach((cupData, index) => {
+            const cup = document.createElement('div');
+            cup.className = 'cup';
+            cup.setAttribute('data-status', cupData.status);
+            cup.addEventListener('click', () => revealCup(cup));
+            gameContainer.appendChild(cup);
+        });
+
+        function revealCup(cup) {
+            const filledImage = 'filled.jpeg'; // Path to your filled cup image
+            const spilledImage = 'spilled coffee.jpeg'; // Path to your spilled cup image
+
+            if (!cup.classList.contains('revealed')) {
+                const img = document.createElement('img');
+                const status = cup.getAttribute('data-status');
+
+                if (status === 'filled') {
+                    img.src = filledImage;
+                    document.getElementById('game-message').innerText = 'You found the filled cup!';
+                } else {
+                    img.src = spilledImage;
+                    document.getElementById('game-message').innerText = 'Oops! The coffee has spilled over.';
+                }
+
+                cup.appendChild(img);
+                cup.classList.add('revealed');
+            } else {
+                document.getElementById('game-message').innerText = 'You already revealed this cup.';
+            }
+        }
+    </script>
+</body>
+</html>
